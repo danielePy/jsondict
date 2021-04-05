@@ -18,9 +18,17 @@ def fbin_book(coppia):
     file=r.text
     return json.loads(file)
 
-def fbin_candlestick(coppia,intervallo,limite):
+def fbin_candlestick_limit(coppia,intervallo,limite):
     coppia=coppia.upper()
     indirizzo='https://fapi.binance.com/fapi/v1/klines?symbol='+coppia+'&interval='+intervallo+'&limit='+limite
+    r=requests.get(indirizzo)
+    file=r.text
+    return json.loads(file)
+
+
+def fbin_candlestick(coppia,intervallo):
+    coppia=coppia.upper()
+    indirizzo='https://fapi.binance.com/fapi/v1/klines?symbol='+coppia+'&interval='+intervallo
     r=requests.get(indirizzo)
     file=r.text
     return json.loads(file)
@@ -40,7 +48,13 @@ def fbin_24h_statisticheprezzo(coppia):
         indirizzo='https://fapi.binance.com/fapi/v1/ticker/24hr?symbol='+coppia
     r=requests.get(indirizzo)
     file=r.text
-    return json.loads(file)
+    dati=json.loads(file)
+    oP=dati['openPrice']
+    hP=dati['highPrice']
+    lwP=dati['lowPrice']
+    lP=dati['lastPrice']
+    wAP=dati['weightedAvgPrice']
+    return oP,hP,lwP,lP,wAP
 
 def fbin_book_migliorprezzo(coppia):
     coppia=coppia.upper()

@@ -52,47 +52,7 @@ def calcPP(coppia,periodo,tf):
     contenuto=contenuto+"\n S2: {0:.5f}".format(float(s2))
     contenuto=contenuto+"\n S3: {0:.5f}".format(float(s3))
     graffunz.disegnaPP(vx,vy,r3,r2,r1,ap,s1,s2,s3,tf,coppia)
-    return contenuto,vx,vy,r3,r2,r1,ap,s1,s2,s3
-
-def calcPP(coppia,periodo,tf):
-    day_delta = datetime.timedelta(days=1)
-    start_date = datetime.date.today()
-    pdateObj=start_date - periodo*day_delta
-    pdate=pdateObj.strftime("%d-%b-%y")
-    print(pdate)
-    dati = simpleBinanceFut.fbin_candlestick(coppia,tf)
-    i=0
-    diffMaxMinPrec=0
-    diffApChPrec=0
-    c=len(dati)
-    vx=[]
-    vy=[]
-    for i in range(c):
-        vx.append(dati[i][0])
-        ap=float(dati[i][1])#ap=float(dati[i][1])
-        ch=float(dati[i][4])#ch=float(dati[i][2])
-        max=float(dati[i][2])#max=float(dati[i][2])
-        min=float(dati[i][3])#min=float(dati[i][3])
-        media=(ap+ch)/2
-        vy.append(media)
-        diffMaxMin=max-min
-        diffApCh=abs(ap-ch)
-        if diffMaxMin > diffMaxMinPrec and diffApCh > diffApChPrec:
-            diffMaxMinPrec=diffMaxMin
-            diffApChPrec=diffApCh
-            candelaPivot=i
-        i=i+1
-    r3,r2,r1,ap,s1,s2,s3=pp(float(dati[candelaPivot][2]),float(dati[candelaPivot][3]),float(dati[candelaPivot][4]))
-    contenuto=" Pivot Point\n R3: {0:.5f}".format(float(r3))
-    contenuto=contenuto+"\n R2: {0:.5f}".format(float(r2))
-    contenuto=contenuto+"\n R1: {0:.5f}".format(float(r1))
-    contenuto=contenuto+"\n AP: {0:.5f}".format(float(ap))
-    contenuto=contenuto+"\n S1: {0:.5f}".format(float(s1))
-    contenuto=contenuto+"\n S2: {0:.5f}".format(float(s2))
-    contenuto=contenuto+"\n S3: {0:.5f}".format(float(s3))
-    #graffunz.disegnaPP(vx,vy,r3,r2,r1,ap,s1,s2,s3,tf,coppia)
-    return contenuto,vx,vy,r3,r2,r1,ap,s1,s2,s3,dati
-
+    return contenuto,r3,r2,r1,ap,s1,s2,s3
 
 def analisiAsset(coppia,periodo,tf):
     oP,hP,lwP,lP,wAP=simpleBinanceFut.fbin_24h_statisticheprezzo(coppia)
@@ -149,26 +109,6 @@ def MA(dati,periodo):
         i=i+1
     ris=ris/periodo
     return ris
-
-def MAlist(dati,periodo,pmedia):
-    ma=[]
-    k=0
-    p=0
-    totale=periodo+pmedia
-    ribalta=[]
-    c=len(dati)-1
-    for i in range(len(dati)):
-        ribalta.append(dati[c][4])
-        c-=1
-    for i in range(totale):
-        for c in range(pmedia):
-            p=p+float(ribalta[i+c])
-        k=p/pmedia
-        p=0
-        ma.append(k)
-    for i in range(pmedia):
-        ma.remove(ma[i])
-    return ma
 
 def percentuale_prezzo_volumi_candele(dati):
     cahm=4 #chiusura apertura high min
