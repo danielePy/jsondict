@@ -1,5 +1,5 @@
 #Porcari Daniele https://danieleporcaripython.blogspot.com
-#Simple Binance Futures API for Python
+#Simple Binance Spot API for Python
 import requests
 import json
 
